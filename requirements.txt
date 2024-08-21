@@ -1,0 +1,6 @@
+ipykernel
+langchain v0.1
+langchain-google-genai
+python-dotenv
+wikipedia
+streamlit
