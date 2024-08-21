@@ -1,8 +1,8 @@
 import os
 import streamlit as st
 from dotenv import load_dotenv, find_dotenv
-# load_dotenv(find_dotenv())
-# os.environ['google_api_key'] = os.getenv('GOOGLEAI_API_KEY')
+load_dotenv(find_dotenv())
+os.environ['google_api_key'] = os.getenv('GOOGLEAI_API_KEY')
 
 # Load environment variables
 load_dotenv()
@@ -42,7 +42,7 @@ title_memory = ConversationBufferMemory(input_key='topic', memory_key='chat_hist
 content_memory = ConversationBufferMemory(input_key='title', memory_key='chat_history')
 
 # LLMs
-llm = GoogleGenerativeAI(temperature=0.8, model='gemini-1.5-flash')
+llm = GoogleGenerativeAI(temperature=0.8, model='gemini-1.5-flash', google_api_key=google_api_key)
 title_chain = LLMChain(llm=llm, prompt=title_template, verbose=True, output_key='title', 
                        memory=title_memory)
 content_chain = LLMChain(llm=llm, prompt=script_template, verbose=True,output_key='scripts', 
