@@ -1,5 +1,5 @@
 ipykernel
-langchain v0.1
+langchain
 langchain-google-genai
 python-dotenv
 wikipedia
