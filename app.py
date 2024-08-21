@@ -1,8 +1,18 @@
 import os
 import streamlit as st
 from dotenv import load_dotenv, find_dotenv
-load_dotenv(find_dotenv())
-os.environ['google_api_key'] = os.getenv('GOOGLEAI_API_KEY')
+# load_dotenv(find_dotenv())
+# os.environ['google_api_key'] = os.getenv('GOOGLEAI_API_KEY')
+
+# Load environment variables
+load_dotenv()
+
+# Load the Google API key from environment variables
+google_api_key = os.getenv('GOOGLEAI_API_KEY')
+
+if google_api_key is None:
+    st.error('Google AI API key is not set.')
+    st.stop()
 
 from langchain_google_genai import GoogleGenerativeAI
 from langchain.prompts import PromptTemplate
