@@ -23,8 +23,8 @@ prompt  = st.text_input('Enter a topic')
 
 # Prompt Templates
 title_template =  PromptTemplate(
-    input_variables= ['topic', 'content_description'],
-    template= 'Write a title heading for this: {topic}. Summarise the article: {content_description}'
+    input_variables= ['content_description'],
+    template= 'Summarise the article: {content_description}'
 )
 
 content_template =  PromptTemplate(
@@ -39,7 +39,7 @@ title_memory = ConversationBufferMemory(input_key='topic', memory_key='chat_hist
 content_memory = ConversationBufferMemory(input_key='title', memory_key='chat_history')
 
 # LLMs
-llm = GoogleGenerativeAI(temperature=0.6, model='gemini-1.5-flash', google_api_key=google_api_key)
+llm = GoogleGenerativeAI(temperature=0.5, model='gemini-1.5-flash', google_api_key=google_api_key)
 title_chain = LLMChain(llm=llm, prompt=title_template, verbose=True, output_key='title', 
                        memory=title_memory)
 content_chain = LLMChain(llm=llm, prompt=content_template, verbose=True,output_key='content', 
@@ -59,7 +59,7 @@ if st.button('Ask'):
         wiki_research = wiki.run(prompt)
         script = content_chain.run({"title":prompt, "wikipedia_research":wiki_research})
         content_description = llm(f"Summarize this article in a few sentences: {script}")
-        title = title_chain.run({'topic':prompt, 'content_description':content_description})
+        title = title_chain.run({'content_description':content_description})
         st.write(title)
         st.write(script)
     else:
