@@ -52,6 +52,7 @@ content_chain = LLMChain(llm=llm, prompt=content_template, verbose=True,output_k
 wiki = WikipediaAPIWrapper()
 
 wiki_research = None  # Initialize outside the conditional block
+content_description = []
 
 #Show stuffs to the screen if theres a prompt
 if st.button('Ask'):
