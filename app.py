@@ -21,19 +21,19 @@ from langchain.memory import ConversationBufferMemory
 from langchain.utilities import WikipediaAPIWrapper
 
 st.title('AI Tutor')
-# st.write('Enter a topic that you will want to learn')  # Display the instruction
+st.write('Enter a topic that you will want to learn')  # Display the instruction
 prompt  = st.text_input('Enter a topic')
 
-#Prompt Template
+# Prompt Templates
 title_template =  PromptTemplate(
-    input_variables= ['topic', 'title'],
-    template= 'Write a title heading me on this: {topic} with an introduction following this {title}'
+    input_variables= ['topic'],
+    template= 'Write a title heading for this: {topic} with an introduction following it.'
 )
 
 content_template =  PromptTemplate(
     input_variables= ['title', 'wikipedia_research'],
     template= """
-Write an extensive article starting with a sub-heading on {title}, including examples and code samples if necessary, while leveraging Wikipedia for research {wikipedia_research}.
+Write an extensive article starting with a sub-heading that is relevant to the title: {title}, including examples and code samples if necessary, while leveraging Wikipedia for research {wikipedia_research}.
 """
 )
 
@@ -45,30 +45,24 @@ content_memory = ConversationBufferMemory(input_key='title', memory_key='chat_hi
 llm = GoogleGenerativeAI(temperature=0.4, model='gemini-1.5-flash', google_api_key=google_api_key)
 title_chain = LLMChain(llm=llm, prompt=title_template, verbose=True, output_key='title', 
                        memory=title_memory)
-content_chain = LLMChain(llm=llm, prompt=script_template, verbose=True,output_key='content', 
+content_chain = LLMChain(llm=llm, prompt=content_template, verbose=True,output_key='content', 
                         memory=content_memory)
 
-
-# sequential_chain = SequentialChain(chains=[title_chain, content_chain],input_variables=['topic'],
-#                                    output_variables=['title','content'], verbose=True)
-
-
+# Wikipedia API
 wiki = WikipediaAPIWrapper()
 
 wiki_research = None  # Initialize outside the conditional block
+
 #Show stuffs to the screen if theres a prompt
 if st.button('Ask'):
     if prompt:
         title = title_chain.run({'topic':prompt})
         wiki_research = wiki.run(prompt)
-        # google_search = google.run(prompt)
-        script = content_chain.run({"title":prompt, "wikipedia_research":wiki_research})
-        # response = sequential_chain({"topic":prompt})
+        script = content_chain.run({"title":title, "wikipedia_research":wiki_research})
         st.write(title)
         st.write(script)
     else:
         st.write('Enter a topic that you want to learn')
-
 
 st.sidebar.header('Knowledge Base')  # Move header outside the 'with' block
 with st.sidebar:
