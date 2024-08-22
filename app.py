@@ -27,7 +27,7 @@ prompt  = st.text_input('Enter a topic')
 # Prompt Templates
 title_template =  PromptTemplate(
     input_variables= ['topic', 'content_description'],
-    template= 'Write a title heading for this: {topic}. The article will cover: {content_description}'
+    template= 'Write a title heading for this: {topic}. Summarise the article: {content_description}'
 )
 
 content_template =  PromptTemplate(
