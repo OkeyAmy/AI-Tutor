@@ -27,13 +27,13 @@ prompt  = st.text_input('Enter a topic')
 # Prompt Templates
 title_template =  PromptTemplate(
     input_variables= ['topic'],
-    template= 'Write a title heading for this: {topic} with an introduction following it.'
+    template= 'Write a title heading for this: {topic} summarising the body of the article'
 )
 
 content_template =  PromptTemplate(
     input_variables= ['title', 'wikipedia_research'],
     template= """
-Write an extensive article starting with a sub-title that is relevant to the title: {title}, including examples and code samples if necessary, while leveraging Wikipedia for research {wikipedia_research}.
+Write an extensive article starting with a sub-title that is relevant to the title with an introduction following it: {title}, including examples and code samples if necessary, while leveraging Wikipedia for research {wikipedia_research}.
 """
 )
 
