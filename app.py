@@ -63,8 +63,10 @@ if st.button('Ask'):
         script = content_chain.run({"title":prompt, "wikipedia_research":wiki_research})
         content_description = llm(f"Summarise the this content {script}")
         title = title_chain.run({'topic':prompt, 'content_description':content_description})
-        st.write(title)
         st.write(script)
+        st.write(title)
+        st.write(content_description)
+        
     else:
         st.write('Enter a topic that you want to learn')
 
