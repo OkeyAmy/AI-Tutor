@@ -4,9 +4,6 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 os.environ['google_api_key'] = os.getenv('GOOGLEAI_API_KEY')
 
-# Load environment variables
-load_dotenv()
-
 # Load the Google API key from environment variables
 google_api_key = os.getenv('GOOGLEAI_API_KEY')
 
@@ -53,6 +50,8 @@ wiki = WikipediaAPIWrapper()
 
 wiki_research = None  # Initialize outside the conditional block
 content_description = None
+title = None
+script = None
 
 #Show stuffs to the screen if theres a prompt
 if st.button('Ask'):
@@ -70,9 +69,11 @@ st.sidebar.header('Knowledge Base')  # Move header outside the 'with' block
 with st.sidebar:
     # The expander now always shows 
     with st.expander('Title History'):
-        st.info(title_memory.buffer)
+        if title_memory.buffer:
+            st.info(title_memory.buffer)
     with st.expander('Content History'):
-        st.info(content_memory.buffer)
+        if content_memory.buffer:
+            st.info(content_memory.buffer)
     with st.expander('Wikipedia Research History'):
         if wiki_research:  # Only display if there's research
             st.info(wiki_research)
