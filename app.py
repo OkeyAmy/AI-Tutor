@@ -33,7 +33,7 @@ title_template =  PromptTemplate(
 script_template =  PromptTemplate(
     input_variables= ['title', 'wikipedia_research'],
     template= """
-Write an extensive note starting with a sub-heading on {title}, including code samples if necessary, while leveraging Wikipedia for research.
+Write an extensive article starting with a sub-heading on {title}, including examples if necessary, while leveraging Wikipedia for research {wikipedia_research}.
 """
 )
 
@@ -49,7 +49,7 @@ content_chain = LLMChain(llm=llm, prompt=script_template, verbose=True,output_ke
                         memory=content_memory)
 
 
-# sequential_chain = SequentialChain(chains=[title_chain, script_chain],input_variables=['topic'],
+# sequential_chain = SequentialChain(chains=[title_chain, content_chain],input_variables=['topic'],
 #                                    output_variables=['title','scripts'], verbose=True)
 
 
