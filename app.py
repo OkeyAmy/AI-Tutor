@@ -60,9 +60,9 @@ title = None
 if st.button('Ask'):
     if prompt:
         wiki_research = wiki.run(prompt)
-        script = content_chain.run({"title":title, "wikipedia_research":wiki_research})
-        content_description = llm.invoke(f"Summarise the this content {scripts}")
-        title = title_chain.run({'topic':prompt, 'content_description':content_chain})
+        script = content_chain.run({"title":prompt, "wikipedia_research":wiki_research})
+        content_description = llm(f"Summarise the this content {script}")
+        title = title_chain.run({'topic':prompt, 'content_description':content_description})
         st.write(title)
         st.write(script)
     else:
