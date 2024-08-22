@@ -23,8 +23,8 @@ prompt  = st.text_input('Enter a topic')
 
 # Prompt Templates
 title_template =  PromptTemplate(
-    input_variables= ['content_description'],
-    template= 'Summarise the article: {content_description}'
+    input_variables= ['topic', 'content_description'],
+    template= 'Write a title heading for this: {topic}, Summarise the article: {content_description}'
 )
 
 content_template =  PromptTemplate(
@@ -59,7 +59,7 @@ if st.button('Ask'):
         wiki_research = wiki.run(prompt)
         script = content_chain.run({"title":prompt, "wikipedia_research":wiki_research})
         content_description = llm(f"Summarize this article in a few sentences: {script}")
-        title = title_chain.run({'content_description':content_description})
+        title = title_chain.run({'content_description':content_description, 'topic':prompt})
         st.write(title)
         st.write(script)
     else:
