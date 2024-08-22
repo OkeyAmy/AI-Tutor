@@ -19,7 +19,7 @@ from langchain.chains import LLMChain, SequentialChain
 from langchain.memory import ConversationBufferMemory
 from langchain.utilities import WikipediaAPIWrapper
 
-st.title('AI Tutor')
+st.title('AI Writer')
 prompt  = st.text_input('Enter a topic 😌')
 
 # Prompt Templates
@@ -31,7 +31,7 @@ title_template =  PromptTemplate(
 content_template =  PromptTemplate(
     input_variables= ['title', 'wikipedia_research'],
     template= """
-Write an extensive article starting with a sub-title relevant to the title and an introduction following it.: {title}, including examples and code samples, if necessary, while leveraging Wikipedia for research {wikipedia_research}.
+Write a detailed article starting with a sub-title relevant to the title and an introduction following it.: {title}, including examples and code samples, if necessary, while leveraging Wikipedia for research {wikipedia_research}.
 """
 )
 
