@@ -4,6 +4,9 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 os.environ['google_api_key'] = os.getenv('GOOGLEAI_API_KEY')
 
+# Load environment variables
+load_dotenv()
+
 # Load the Google API key from environment variables
 google_api_key = os.getenv('GOOGLEAI_API_KEY')
 
@@ -24,7 +27,7 @@ prompt  = st.text_input('Enter a topic')
 # Prompt Templates
 title_template =  PromptTemplate(
     input_variables= ['topic', 'content_description'],
-    template= 'Write a title heading for this: {topic}, Summarise the article: {content_description}'
+    template= 'Write a title heading for this: {topic}. The article will cover this {content_description} i want you to summarize it'
 )
 
 content_template =  PromptTemplate(
@@ -39,7 +42,7 @@ title_memory = ConversationBufferMemory(input_key='topic', memory_key='chat_hist
 content_memory = ConversationBufferMemory(input_key='title', memory_key='chat_history')
 
 # LLMs
-llm = GoogleGenerativeAI(temperature=0.5, model='gemini-1.5-flash', google_api_key=google_api_key)
+llm = GoogleGenerativeAI(temperature=0.6, model='gemini-1.5-flash', google_api_key=google_api_key)
 title_chain = LLMChain(llm=llm, prompt=title_template, verbose=True, output_key='title', 
                        memory=title_memory)
 content_chain = LLMChain(llm=llm, prompt=content_template, verbose=True,output_key='content', 
@@ -49,19 +52,19 @@ content_chain = LLMChain(llm=llm, prompt=content_template, verbose=True,output_k
 wiki = WikipediaAPIWrapper()
 
 wiki_research = None  # Initialize outside the conditional block
+script = None
 content_description = None
 title = None
-script = None
 
 #Show stuffs to the screen if theres a prompt
 if st.button('Ask'):
     if prompt:
         wiki_research = wiki.run(prompt)
-        script = content_chain.run({"title":prompt, "wikipedia_research":wiki_research})
-        content_description = llm(f"Summarize this article in a few sentences: {script}")
-        title = title_chain.run({'content_description':content_description, 'topic':prompt})
-        st.write(script)
+        script = content_chain.run({"title":title, "wikipedia_research":wiki_research})
+        content_description = llm.invoke(f"Summarise the this content {scripts}")
+        title = title_chain.run({'topic':prompt, 'content_description':content_chain})
         st.write(title)
+        st.write(script)
     else:
         st.write('Enter a topic that you want to learn')
 
@@ -69,11 +72,9 @@ st.sidebar.header('Knowledge Base')  # Move header outside the 'with' block
 with st.sidebar:
     # The expander now always shows 
     with st.expander('Title History'):
-        if title_memory.buffer:
-            st.info(title_memory.buffer)
+        st.info(title_memory.buffer)
     with st.expander('Content History'):
-        if content_memory.buffer:
-            st.info(content_memory.buffer)
+        st.info(content_memory.buffer)
     with st.expander('Wikipedia Research History'):
         if wiki_research:  # Only display if there's research
             st.info(wiki_research)
