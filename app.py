@@ -33,7 +33,7 @@ title_template =  PromptTemplate(
 script_template =  PromptTemplate(
     input_variables= ['title', 'wikipedia_research'],
     template= """
-Write an extensive article starting with a sub-heading on {title}, including examples if necessary, while leveraging Wikipedia for research {wikipedia_research}.
+Write an extensive article starting with a sub-heading on {title}, including examples and code samples if necessary, while leveraging Wikipedia for research {wikipedia_research}.
 """
 )
 
