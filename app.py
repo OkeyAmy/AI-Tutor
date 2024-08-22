@@ -25,7 +25,7 @@ prompt  = st.text_input('Enter a topic 😌')
 # Prompt Templates
 title_template =  PromptTemplate(
     input_variables= ['topic', 'content_description'],
-    template= 'Write a title heading for this: {topic}. The article will cover this {content_description} i want you to summarize it'
+    template= 'Write a title heading for this: {topic}. The article will cover this {content_description} I want you to summarize it'
 )
 
 content_template =  PromptTemplate(
@@ -40,7 +40,7 @@ title_memory = ConversationBufferMemory(input_key='topic', memory_key='chat_hist
 content_memory = ConversationBufferMemory(input_key='title', memory_key='chat_history')
 
 # LLMs
-llm = GoogleGenerativeAI(temperature=1, model='gemini-1.5-flash', google_api_key=google_api_key)
+llm = GoogleGenerativeAI(temperature=0, model='gemini-1.5-flash', google_api_key=google_api_key)
 title_chain = LLMChain(llm=llm, prompt=title_template, verbose=True, output_key='title', 
                        memory=title_memory)
 content_chain = LLMChain(llm=llm, prompt=content_template, verbose=True,output_key='content', 
