@@ -21,8 +21,7 @@ from langchain.memory import ConversationBufferMemory
 from langchain.utilities import WikipediaAPIWrapper
 
 st.title('AI Tutor')
-st.write('Enter a topic that you will want to learn')  # Display the instruction
-prompt  = st.text_input('Enter a topic')
+prompt  = st.text_input('Enter a topic 😌')
 
 # Prompt Templates
 title_template =  PromptTemplate(
@@ -64,11 +63,10 @@ if st.button('Ask'):
         content_description = llm(f"Summarise the this content {script}")
         title = title_chain.run({'topic':prompt, 'content_description':content_description})
         st.write(script)
-        st.header('SUMMARY')
         st.write(content_description)
         
     else:
-        st.write('Enter a topic that you want to learn')
+        st.write('Enter a topic that you want to write on')
 
 st.sidebar.header('Knowledge Base')  # Move header outside the 'with' block
 with st.sidebar:
