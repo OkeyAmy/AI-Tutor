@@ -64,7 +64,7 @@ if st.button('Ask'):
         content_description = llm(f"Summarise the this content {script}")
         title = title_chain.run({'topic':prompt, 'content_description':content_description})
         st.write(script)
-        st.write.header('SUMMARY', title)
+        st.header('SUMMARY')
         st.write(content_description)
         
     else:
