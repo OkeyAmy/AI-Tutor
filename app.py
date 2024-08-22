@@ -56,7 +56,7 @@ wiki_research = None  # Initialize outside the conditional block
 #Show stuffs to the screen if theres a prompt
 if st.button('Ask'):
     if prompt:
-        title = title_chain.run({'topic':prompt})
+        title = title_chain.run({'topic':prompt, 'content_description':content_chain})
         wiki_research = wiki.run(prompt)
         script = content_chain.run({"title":title, "wikipedia_research":wiki_research})
         st.write(title)
