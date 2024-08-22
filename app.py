@@ -26,11 +26,11 @@ prompt  = st.text_input('Enter a topic')
 
 #Prompt Template
 title_template =  PromptTemplate(
-    input_variables= ['topic'],
-    template= 'Write a title heading me on this: {topic}'
+    input_variables= ['topic', 'title'],
+    template= 'Write a title heading me on this: {topic} with an introduction following this {title}'
 )
 
-script_template =  PromptTemplate(
+content_template =  PromptTemplate(
     input_variables= ['title', 'wikipedia_research'],
     template= """
 Write an extensive article starting with a sub-heading on {title}, including examples and code samples if necessary, while leveraging Wikipedia for research {wikipedia_research}.
@@ -45,12 +45,12 @@ content_memory = ConversationBufferMemory(input_key='title', memory_key='chat_hi
 llm = GoogleGenerativeAI(temperature=0.4, model='gemini-1.5-flash', google_api_key=google_api_key)
 title_chain = LLMChain(llm=llm, prompt=title_template, verbose=True, output_key='title', 
                        memory=title_memory)
-content_chain = LLMChain(llm=llm, prompt=script_template, verbose=True,output_key='scripts', 
+content_chain = LLMChain(llm=llm, prompt=script_template, verbose=True,output_key='content', 
                         memory=content_memory)
 
 
 # sequential_chain = SequentialChain(chains=[title_chain, content_chain],input_variables=['topic'],
-#                                    output_variables=['title','scripts'], verbose=True)
+#                                    output_variables=['title','content'], verbose=True)
 
 
 wiki = WikipediaAPIWrapper()
